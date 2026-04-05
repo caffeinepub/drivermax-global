@@ -1,0 +1,316 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "BricolageGrotesque";
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/assets/fonts/Satoshi.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Navy hero bg: #061B2B -> oklch(~0.17 0.035 230) */
+    --navy-hero: 0.17 0.035 230;
+    /* Page bg: #EEF2F5 -> oklch(~0.95 0.007 228) */
+    --page-bg: 0.95 0.007 228;
+    /* White cards */
+    --background: 1 0 0;
+    --foreground: 0.13 0.02 240;
+    --card: 1 0 0;
+    --card-foreground: 0.13 0.02 240;
+    --popover: 1 0 0;
+    --popover-foreground: 0.13 0.02 240;
+    /* Blue accent: #2F80ED -> oklch(~0.58 0.18 240) */
+    --primary: 0.58 0.18 240;
+    --primary-foreground: 1 0 0;
+    /* Muted */
+    --secondary: 0.95 0.007 228;
+    --secondary-foreground: 0.13 0.02 240;
+    --muted: 0.95 0.007 228;
+    --muted-foreground: 0.47 0.015 230;
+    /* Gold accent: #D6B15A -> oklch(~0.76 0.12 75) */
+    --accent: 0.76 0.12 75;
+    --accent-foreground: 0.13 0.02 240;
+    /* Destructive */
+    --destructive: 0.55 0.22 27;
+    --destructive-foreground: 1 0 0;
+    /* Success green */
+    --success: 0.64 0.17 145;
+    /* Borders */
+    --border: 0.91 0.005 230;
+    --input: 0.91 0.005 230;
+    --ring: 0.58 0.18 240;
+    /* Charts */
+    --chart-1: 0.58 0.18 240;
+    --chart-2: 0.76 0.12 75;
+    --chart-3: 0.64 0.17 145;
+    --chart-4: 0.55 0.22 27;
+    --chart-5: 0.7 0.12 300;
+    /* Sidebar */
+    --sidebar: 1 0 0;
+    --sidebar-foreground: 0.13 0.02 240;
+    --sidebar-primary: 0.58 0.18 240;
+    --sidebar-primary-foreground: 1 0 0;
+    --sidebar-accent: 0.95 0.007 228;
+    --sidebar-accent-foreground: 0.13 0.02 240;
+    --sidebar-border: 0.91 0.005 230;
+    --sidebar-ring: 0.58 0.18 240;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-page text-foreground;
+    font-family: "Satoshi", system-ui, sans-serif;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: "BricolageGrotesque", system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .bg-navy {
+    background-color: oklch(var(--navy-hero));
+  }
+  .bg-page {
+    background-color: oklch(var(--page-bg));
+  }
+  .bg-navy-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.17 0.035 230),
+      oklch(0.13 0.028 225)
+    );
+  }
+  .text-gold {
+    color: oklch(var(--accent));
+  }
+  .text-success {
+    color: oklch(var(--success));
+  }
+  .bg-gold {
+    background-color: oklch(var(--accent));
+  }
+  .border-gold {
+    border-color: oklch(var(--accent));
+  }
+  .shadow-card {
+    box-shadow: 0 4px 24px rgba(6, 27, 43, 0.08), 0 1px 4px
+      rgba(6, 27, 43, 0.04);
+  }
+  .shadow-voice {
+    box-shadow: 0 8px 32px rgba(47, 128, 237, 0.35);
+  }
+  .animate-pulse-ring {
+    animation: pulseRing 1.2s ease-in-out infinite;
+  }
+  .premium-glow {
+    box-shadow: 0 0 0 1.5px oklch(var(--accent) / 0.4), 0 4px 24px
+      rgba(6, 27, 43, 0.08);
+  }
+  /* Stagger animation delays */
+  .stagger-1 {
+    animation-delay: 0ms;
+  }
+  .stagger-2 {
+    animation-delay: 80ms;
+  }
+  .stagger-3 {
+    animation-delay: 160ms;
+  }
+  .stagger-4 {
+    animation-delay: 240ms;
+  }
+  .stagger-5 {
+    animation-delay: 320ms;
+  }
+  .stagger-6 {
+    animation-delay: 400ms;
+  }
+  .animate-fade-up {
+    animation: fadeUp 0.4s ease-out forwards;
+    opacity: 0;
+  }
+  .font-display {
+    font-family: "BricolageGrotesque", system-ui, sans-serif;
+    font-weight: 700;
+  }
+  /* Page slide-in transition */
+  .page-slide-in {
+    animation: slideInRight 0.25s ease-out forwards;
+  }
+  /* Card hover lift */
+  .card-hover-lift {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card-hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(6, 27, 43, 0.13), 0 2px 6px
+      rgba(6, 27, 43, 0.07);
+  }
+  /* Button press */
+  .btn-press:active {
+    transform: scale(0.97);
+  }
+  /* Skeleton loader */
+  .skeleton-loader {
+    background: linear-gradient(
+      90deg,
+      oklch(0.91 0.005 230) 25%,
+      oklch(0.94 0.004 228) 50%,
+      oklch(0.91 0.005 230) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonPulse 1.6s ease-in-out infinite;
+  }
+  /* Shimmer sweep overlay */
+  .shimmer-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmerSweep 3s linear infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes pulseRing {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.58 0.18 240 / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 12px oklch(0.58 0.18 240 / 0);
+  }
+}
+
+@keyframes recordingPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.55 0.22 27 / 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 16px oklch(0.55 0.22 27 / 0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes shimmerSweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes streakFlame {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes skeletonPulse {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes labelScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes confettiFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
