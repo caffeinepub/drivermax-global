@@ -124,7 +124,7 @@ function generateICS(event: {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//DriverMax//EN",
+    "PRODID:-//MoneyDrive//EN",
     "BEGIN:VEVENT",
     `SUMMARY:${event.title}`,
     `DTSTART:${fmt(d)}`,

@@ -118,7 +118,7 @@ const TESTIMONIALS = [
     name: "Sipho M.",
     city: "Johannesburg",
     rating: 5,
-    text: "DriverMax changed how I work. I know exactly when to drive and how much I’ll make. My income went up 40% in the first month.",
+    text: "MoneyDrive changed how I work. I know exactly when to drive and how much I’ll make. My income went up 40% in the first month.",
   },
   {
     name: "Thabo K.",
@@ -180,16 +180,14 @@ function useCountUp(end: number, _decimals = 0, duration = 1800) {
   return { count, ref };
 }
 
-const LogoSvg = () => (
-  <svg
-    viewBox="0 0 24 24"
-    aria-label="DriverMax logo"
-    role="img"
-    fill="currentColor"
-    className="w-5 h-5 text-white"
-  >
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
-  </svg>
+const LogoSvg = ({ size = 20 }: { size?: number }) => (
+  <img
+    src="/assets/generated/moneydrive-icon-transparent.dim_512x512.png"
+    alt="MoneyDrive"
+    width={size}
+    height={size}
+    style={{ objectFit: "contain" }}
+  />
 );
 
 function StatCounter({
@@ -224,7 +222,7 @@ export default function LandingPage() {
         className="relative overflow-hidden"
         style={{
           background:
-            "linear-gradient(135deg, oklch(0.17 0.035 230) 0%, oklch(0.14 0.04 240) 60%, oklch(0.19 0.03 225) 100%)",
+            "linear-gradient(135deg, oklch(0.10 0.015 75) 0%, oklch(0.08 0.012 80) 60%, oklch(0.12 0.018 70) 100%)",
         }}
       >
         {/* Diagonal gradient overlay */}
@@ -232,7 +230,7 @@ export default function LandingPage() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 70% 40%, oklch(0.58 0.18 240 / 0.12), transparent)",
+              "radial-gradient(ellipse 80% 60% at 70% 40%, oklch(0.75 0.12 85 / 0.10), transparent)",
           }}
         />
 
@@ -243,10 +241,10 @@ export default function LandingPage() {
             </div>
             <div>
               <div className="text-white font-display font-extrabold text-lg leading-none">
-                DriverMax
+                MoneyDrive
               </div>
               <div className="text-gold text-[9px] font-bold tracking-widest uppercase">
-                GLOBAL
+                COMMAND CENTER
               </div>
             </div>
           </div>
@@ -271,7 +269,7 @@ export default function LandingPage() {
             <span
               className="text-gold"
               style={{
-                textShadow: "0 0 40px oklch(0.76 0.12 75 / 0.4)",
+                textShadow: "0 0 40px oklch(0.75 0.12 85 / 0.5)",
               }}
             >
               Earn More.
@@ -342,7 +340,7 @@ export default function LandingPage() {
           >
             <path
               d="M0 60 L0 30 Q300 0 600 30 Q900 60 1200 30 L1200 60 Z"
-              fill="oklch(0.95 0.007 228)"
+              fill="oklch(0.08 0.01 85)"
             />
           </svg>
         </div>
@@ -359,7 +357,7 @@ export default function LandingPage() {
             Simple &amp; Powerful
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold text-foreground">
-            How DriverMax Works
+            How MoneyDrive Works
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -386,7 +384,7 @@ export default function LandingPage() {
 
       {/* Feature Grid */}
       <section
-        className="bg-navy-gradient py-16"
+        className="bg-hero-gradient py-16"
         data-ocid="landing.features.section"
       >
         <div className="max-w-5xl mx-auto px-4">
@@ -506,7 +504,7 @@ export default function LandingPage() {
                 t.isPopular
                   ? "bg-primary text-primary-foreground shadow-voice ring-2 ring-primary"
                   : t.isPremium
-                    ? "bg-navy-gradient text-white ring-2 ring-gold/40"
+                    ? "bg-hero-gradient text-white ring-2 ring-gold/40"
                     : "bg-card shadow-card"
               }`}
               data-ocid={`landing.pricing.tier.${t.id}.card`}
@@ -597,7 +595,7 @@ export default function LandingPage() {
         className="py-16 shimmer-sweep"
         style={{
           background:
-            "linear-gradient(135deg, oklch(0.17 0.035 230), oklch(0.22 0.045 240))",
+            "linear-gradient(135deg, oklch(0.10 0.015 75), oklch(0.14 0.02 80))",
         }}
         data-ocid="landing.bottom_cta.section"
       >
@@ -606,7 +604,7 @@ export default function LandingPage() {
             Ready to Drive Smarter?
           </h2>
           <p className="text-white/70 text-lg mb-8">
-            Join 1,200+ drivers already using DriverMax to earn more, stress
+            Join 1,200+ drivers already using MoneyDrive to earn more, stress
             less, and own their journey.
           </p>
           <Button
@@ -630,9 +628,7 @@ export default function LandingPage() {
           <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
             <LogoSvg />
           </div>
-          <span className="font-display font-bold text-sm">
-            DriverMax Global
-          </span>
+          <span className="font-display font-bold text-sm">MoneyDrive</span>
         </div>
         <p className="text-xs text-muted-foreground mb-1">
           Not financial advice. For trip and earnings tracking only.

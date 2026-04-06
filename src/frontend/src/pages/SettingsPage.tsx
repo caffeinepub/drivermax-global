@@ -147,13 +147,13 @@ export default function SettingsPage({ profile, onSave }: SettingsPageProps) {
     > = {
       1: {
         name: "Basic",
-        desc: "DriverMax Basic subscription",
+        desc: "MoneyDrive Basic subscription",
         price: 50000,
       },
-      2: { name: "Pro", desc: "DriverMax Pro subscription", price: 80000 },
+      2: { name: "Pro", desc: "MoneyDrive Pro subscription", price: 80000 },
       3: {
         name: "Premium",
-        desc: "DriverMax Premium subscription",
+        desc: "MoneyDrive Premium subscription",
         price: 110000,
       },
     };
@@ -517,7 +517,7 @@ export default function SettingsPage({ profile, onSave }: SettingsPageProps) {
 
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
         <p className="text-amber-800 text-xs">
-          <strong>Disclaimer:</strong> DriverMax Global is a trip and earnings
+          <strong>Disclaimer:</strong> MoneyDrive is a trip and earnings
           tracking tool only. Nothing in this app constitutes financial advice.
           Please consult a qualified financial professional for any financial
           decisions.

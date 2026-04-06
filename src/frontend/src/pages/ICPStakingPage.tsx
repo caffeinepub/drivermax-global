@@ -154,7 +154,7 @@ function addDays(date: Date, days: number): Date {
 }
 
 function getReminderKey(stakeId: string): string {
-  return `drivermax_stake_reminder_${stakeId}`;
+  return `moneydrive_stake_reminder_${stakeId}`;
 }
 
 function isReminderSet(stakeId: string): boolean {
@@ -179,7 +179,7 @@ async function requestStakeReminder(
 
   if (permission !== "granted") return "denied";
 
-  new Notification("DriverMax — Reminder Set ✓", {
+  new Notification("MoneyDrive — Reminder Set ✓", {
     body: `Reminder set for ${icpAmount.toFixed(4)} ICP stake unlocking on ${unlockDateStr}`,
     icon: "/favicon.ico",
   });
@@ -208,7 +208,7 @@ export default function ICPStakingPage({
 
   // Dismissal state for top banner (sessionStorage-backed)
   const [topBannerDismissed, setTopBannerDismissed] = useState<boolean>(
-    () => sessionStorage.getItem("drivermax_stake_banner_dismissed") === "1",
+    () => sessionStorage.getItem("moneydrive_stake_banner_dismissed") === "1",
   );
 
   // State for stake to delete (for confirmation dialog)
@@ -218,7 +218,7 @@ export default function ICPStakingPage({
   const [remindersSet, setRemindersSet] = useState<Record<string, boolean>>(
     () => {
       const result: Record<string, boolean> = {};
-      const prefix = "drivermax_stake_reminder_";
+      const prefix = "moneydrive_stake_reminder_";
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (!key?.startsWith(prefix)) continue;
@@ -403,7 +403,7 @@ export default function ICPStakingPage({
   };
 
   const handleDismissTopBanner = () => {
-    sessionStorage.setItem("drivermax_stake_banner_dismissed", "1");
+    sessionStorage.setItem("moneydrive_stake_banner_dismissed", "1");
     setTopBannerDismissed(true);
   };
 

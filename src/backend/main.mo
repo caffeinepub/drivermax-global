@@ -60,7 +60,7 @@ actor {
     startTime : Text;
     endTime : Text;
     targetEarnings : Float;
-    status : Text; // planned/completed/cancelled
+    status : Text;
     notes : Text;
   };
 
@@ -112,6 +112,36 @@ actor {
     notes : Text;
   };
 
+  // Passenger Payment Types
+  public type DriverPaymentConfig = {
+    btcAddress : Text;
+    ethAddress : Text;
+    solAddress : Text;
+    bnbAddress : Text;
+    usdcAddress : Text;
+    baseAddress : Text;
+    usdtAddress : Text;
+    bankName : Text;
+    bankAccount : Text;
+    bankReference : Text;
+  };
+
+  public type OrderItem = {
+    productName : Text;
+    quantity : Nat;
+    unitPrice : Float;
+  };
+
+  public type PassengerOrder = {
+    orderId : Text;
+    driverName : Text;
+    items : [OrderItem];
+    totalAmount : Float;
+    paymentMethod : Text;
+    timestamp : Int;
+    passengerNote : Text;
+  };
+
   module Trip {
     public func compare(a : Trip, b : Trip) : Order.Order {
       Text.compare(a.tripId, b.tripId);
@@ -159,6 +189,11 @@ actor {
   let fuelLogs = Map.empty<UserId, Map.Map<Int, FuelLog>>();
   let events = Map.empty<UserId, Map.Map<Text, Event>>();
   let stakingRecords = Map.empty<UserId, Map.Map<Text, StakingRecord>>();
+
+  // Passenger payment state
+  let driverNameIndex = Map.empty<Text, UserId>();
+  let paymentConfigs = Map.empty<UserId, DriverPaymentConfig>();
+  let passengerOrders = Map.empty<UserId, Map.Map<Text, PassengerOrder>>();
 
   var shiftCounter = 0;
   var tripCounter = 0;
@@ -223,6 +258,9 @@ actor {
       };
     };
     profiles.add(caller, updatedProfile);
+    if (updatedProfile.displayName != "") {
+      driverNameIndex.add(updatedProfile.displayName, caller);
+    };
   };
 
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
@@ -245,6 +283,9 @@ actor {
       };
     };
     profiles.add(caller, updatedProfile);
+    if (updatedProfile.displayName != "") {
+      driverNameIndex.add(updatedProfile.displayName, caller);
+    };
   };
 
   public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
@@ -616,7 +657,6 @@ actor {
       case (null) { Map.empty<Text, Event>() };
       case (?events) { events };
     };
-    // Always force isUserCreated = true for backend-stored events
     let eventWithFlag = { event with isUserCreated = true };
     userEvents.add(eventWithFlag.eventId, eventWithFlag);
     events.add(caller, userEvents);
@@ -796,5 +836,88 @@ actor {
 
   public shared ({ caller }) func createCheckoutSession(items : [Stripe.ShoppingItem], successUrl : Text, cancelUrl : Text) : async Text {
     await Stripe.createCheckoutSession(getStripeConfiguration(), caller, items, successUrl, cancelUrl, transform);
+  };
+
+  // ─── Passenger Payment System ───────────────────────────────────────────────
+
+  // Driver saves their payment receiving config (wallet addresses + bank details)
+  public shared ({ caller }) func saveDriverPaymentConfig(config : DriverPaymentConfig) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only drivers can save payment config");
+    };
+    paymentConfigs.add(caller, config);
+  };
+
+  // Driver retrieves their own payment config
+  public query ({ caller }) func getMyPaymentConfig() : async ?DriverPaymentConfig {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    paymentConfigs.get(caller);
+  };
+
+  // Public: passenger gets a driver's products by driver display name (no auth required)
+  public query func getPublicDriverMenu(driverName : Text) : async [Product] {
+    switch (driverNameIndex.get(driverName)) {
+      case (null) { [] };
+      case (?driverId) {
+        switch (products.get(driverId)) {
+          case (null) { [] };
+          case (?userProducts) {
+            userProducts.values().toArray().filter(func(p : Product) : Bool {
+              p.currentStock > 0;
+            });
+          };
+        };
+      };
+    };
+  };
+
+  // Public: passenger gets a driver's payment config by driver display name (no auth required)
+  public query func getPublicDriverPaymentConfig(driverName : Text) : async ?DriverPaymentConfig {
+    switch (driverNameIndex.get(driverName)) {
+      case (null) { null };
+      case (?driverId) { paymentConfigs.get(driverId) };
+    };
+  };
+
+  // Public: passenger submits an order to a driver (no auth required)
+  public shared func logPassengerOrder(driverName : Text, order : PassengerOrder) : async () {
+    switch (driverNameIndex.get(driverName)) {
+      case (null) { Runtime.trap("Driver not found") };
+      case (?driverId) {
+        let driverOrders = switch (passengerOrders.get(driverId)) {
+          case (null) { Map.empty<Text, PassengerOrder>() };
+          case (?o) { o };
+        };
+        let orderWithTimestamp = { order with timestamp = Time.now() };
+        driverOrders.add(order.orderId, orderWithTimestamp);
+        passengerOrders.add(driverId, driverOrders);
+      };
+    };
+  };
+
+  // Authenticated: driver retrieves all passenger orders submitted to them
+  public query ({ caller }) func getPassengerOrders() : async [PassengerOrder] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    switch (passengerOrders.get(caller)) {
+      case (null) { [] };
+      case (?o) { o.values().toArray() };
+    };
+  };
+
+  // Authenticated: driver deletes a specific passenger order
+  public shared ({ caller }) func deletePassengerOrder(orderId : Text) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let driverOrders = switch (passengerOrders.get(caller)) {
+      case (null) { Map.empty<Text, PassengerOrder>() };
+      case (?o) { o };
+    };
+    driverOrders.remove(orderId);
+    passengerOrders.add(caller, driverOrders);
   };
 };

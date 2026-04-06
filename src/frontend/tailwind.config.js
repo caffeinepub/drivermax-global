@@ -54,6 +54,16 @@ export default {
         success: {
           DEFAULT: "oklch(var(--success))",
         },
+        gold: {
+          DEFAULT: "oklch(var(--gold))",
+          dark: "oklch(var(--gold-dark))",
+        },
+        brown: {
+          DEFAULT: "oklch(var(--brown))",
+        },
+        forest: {
+          DEFAULT: "oklch(var(--forest))",
+        },
         chart: {
           1: "oklch(var(--chart-1))",
           2: "oklch(var(--chart-2))",
@@ -81,10 +91,10 @@ export default {
         "3xl": "1.5rem",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgba(0,0,0,0.05)",
-        card: "0 4px 24px rgba(6,27,43,0.08), 0 1px 4px rgba(6,27,43,0.04)",
-        voice: "0 8px 32px rgba(47,128,237,0.35)",
-        "gold-glow": "0 0 0 1.5px oklch(0.76 0.12 75 / 0.4), 0 4px 24px rgba(6,27,43,0.08)",
+        xs: "0 1px 2px 0 rgba(0,0,0,0.3)",
+        card: "0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.2)",
+        voice: "0 8px 32px oklch(0.75 0.12 85 / 0.4)",
+        "gold-glow": "0 0 0 1.5px oklch(0.75 0.12 85 / 0.4), 0 4px 24px rgba(0,0,0,0.3)",
       },
       keyframes: {
         "accordion-down": {
@@ -96,12 +106,12 @@ export default {
           to: { height: "0" },
         },
         pulseRing: {
-          "0%, 100%": { boxShadow: "0 0 0 0 oklch(0.58 0.18 240 / 0.5)" },
-          "50%": { boxShadow: "0 0 0 12px oklch(0.58 0.18 240 / 0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 oklch(0.75 0.12 85 / 0.5)" },
+          "50%": { boxShadow: "0 0 0 12px oklch(0.75 0.12 85 / 0)" },
         },
         recordingPulse: {
-          "0%, 100%": { boxShadow: "0 0 0 0 oklch(0.55 0.22 27 / 0.6)" },
-          "50%": { boxShadow: "0 0 0 16px oklch(0.55 0.22 27 / 0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 oklch(0.55 0.18 25 / 0.6)" },
+          "50%": { boxShadow: "0 0 0 16px oklch(0.55 0.18 25 / 0)" },
         },
         fadeUp: {
           from: { opacity: "0", transform: "translateY(8px)" },

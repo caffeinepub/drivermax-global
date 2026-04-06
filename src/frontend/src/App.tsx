@@ -18,6 +18,7 @@ import ExpenseTrackerPage from "./pages/ExpenseTrackerPage";
 import FuelCalculatorPage from "./pages/FuelCalculatorPage";
 import ICPStakingPage from "./pages/ICPStakingPage";
 import LandingPage from "./pages/LandingPage";
+import PassengerMenuPage from "./pages/PassengerMenuPage";
 import QRMenuPage from "./pages/QRMenuPage";
 import SalesPage from "./pages/SalesPage";
 import SchedulePage from "./pages/SchedulePage";
@@ -36,7 +37,23 @@ export type Tab =
   | "staking"
   | "settings";
 
+// Detect /menu/:driverName at module level (before any React hooks)
+function getPassengerRoute(): string | null {
+  const match = window.location.pathname.match(/^\/menu\/(.+)$/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+const passengerDriverName = getPassengerRoute();
+
+// If this is a passenger QR menu route, render only that page
 export default function App() {
+  if (passengerDriverName !== null) {
+    return <PassengerMenuPage driverName={passengerDriverName} />;
+  }
+  return <DriverApp />;
+}
+
+function DriverApp() {
   const { identity, isInitializing } = useInternetIdentity();
   const { actor, isFetching: actorFetching } = useActor();
   const queryClient = useQueryClient();
@@ -97,10 +114,10 @@ export default function App() {
 
   if (isInitializing || actorFetching) {
     return (
-      <div className="min-h-screen bg-navy-gradient flex items-center justify-center">
+      <div className="min-h-screen bg-hero-gradient flex items-center justify-center">
         <div className="flex flex-col items-center gap-4 text-white">
           <Loader2 className="w-10 h-10 animate-spin text-primary" />
-          <p className="text-lg font-display">Loading DriverMax Global...</p>
+          <p className="text-lg font-display">Loading MoneyDrive...</p>
         </div>
       </div>
     );

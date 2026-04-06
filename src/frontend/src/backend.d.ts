@@ -123,6 +123,32 @@ export interface StakingRecord {
     startDate: bigint;
     notes: string;
 }
+export interface DriverPaymentConfig {
+    btcAddress: string;
+    ethAddress: string;
+    solAddress: string;
+    bnbAddress: string;
+    usdcAddress: string;
+    baseAddress: string;
+    usdtAddress: string;
+    bankName: string;
+    bankAccount: string;
+    bankReference: string;
+}
+export interface OrderItem {
+    productName: string;
+    quantity: bigint;
+    unitPrice: number;
+}
+export interface PassengerOrder {
+    orderId: string;
+    driverName: string;
+    items: Array<OrderItem>;
+    totalAmount: number;
+    paymentMethod: string;
+    timestamp: bigint;
+    passengerNote: string;
+}
 export enum UserRole {
     admin = "admin",
     user = "user",
@@ -141,6 +167,7 @@ export interface backendInterface {
     createOrUpdateProfile(profile: UserProfile): Promise<void>;
     deleteCustomEvent(eventId: string): Promise<void>;
     deleteExpense(expenseId: string): Promise<void>;
+    deletePassengerOrder(orderId: string): Promise<void>;
     deleteProduct(productId: string): Promise<void>;
     deleteSale(saleId: string): Promise<void>;
     deleteStakingRecord(stakeId: string): Promise<void>;
@@ -160,7 +187,11 @@ export interface backendInterface {
     }>;
     getICPPrice(): Promise<string>;
     getLowStockProducts(): Promise<Array<Product>>;
+    getMyPaymentConfig(): Promise<DriverPaymentConfig | null>;
+    getPassengerOrders(): Promise<Array<PassengerOrder>>;
     getProducts(): Promise<Array<Product>>;
+    getPublicDriverMenu(driverName: string): Promise<Array<Product>>;
+    getPublicDriverPaymentConfig(driverName: string): Promise<DriverPaymentConfig | null>;
     getSales(): Promise<Array<Sale>>;
     getShiftHistory(): Promise<Array<Shift>>;
     getShifts(): Promise<Array<Shift>>;
@@ -174,7 +205,9 @@ export interface backendInterface {
     isCallerAdmin(): Promise<boolean>;
     isElevenLabsConfigured(): Promise<boolean>;
     isStripeConfigured(): Promise<boolean>;
+    logPassengerOrder(driverName: string, order: PassengerOrder): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    saveDriverPaymentConfig(config: DriverPaymentConfig): Promise<void>;
     saveFuelProfile(fuelConsumptionRate: number, vehicleName: string): Promise<void>;
     saveStakingRecord(record: StakingRecord): Promise<void>;
     setEarningsGoal(goal: EarningsGoal): Promise<void>;

@@ -96,16 +96,14 @@ const MORE_TABS: {
 
 const ALL_DESKTOP_TABS = [...PRIMARY_TABS, ...MORE_TABS];
 
-const LogoIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    aria-label="DriverMax logo"
-    role="img"
-    fill="currentColor"
-    className="w-5 h-5"
-  >
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
-  </svg>
+const LogoIcon = ({ size = 20 }: { size?: number }) => (
+  <img
+    src="/assets/generated/moneydrive-icon-transparent.dim_512x512.png"
+    alt="MoneyDrive"
+    width={size}
+    height={size}
+    style={{ objectFit: "contain" }}
+  />
 );
 
 const TIER_BADGE_STYLES: Record<number, { label: string; cls: string }> = {
@@ -152,19 +150,19 @@ export default function NavBar({
   return (
     <>
       {/* Desktop top nav */}
-      <header className="bg-navy-gradient shadow-sm hidden md:block">
+      <header className="bg-hero-gradient shadow-sm hidden md:block">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
           {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-voice">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-voice overflow-hidden">
               <LogoIcon />
             </div>
             <div>
               <div className="text-white font-display font-bold text-sm leading-none">
-                DriverMax
+                MoneyDrive
               </div>
               <div className="text-gold text-[8px] font-bold tracking-widest uppercase">
-                GLOBAL
+                PRO COMMAND
               </div>
             </div>
           </div>
@@ -242,14 +240,14 @@ export default function NavBar({
       </header>
 
       {/* Mobile top bar */}
-      <header className="bg-navy-gradient md:hidden sticky top-0 z-40 shadow-sm">
+      <header className="bg-hero-gradient md:hidden sticky top-0 z-40 shadow-sm">
         <div className="px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center text-white">
+            <div className="w-7 h-7 rounded-md flex items-center justify-center overflow-hidden">
               <LogoIcon />
             </div>
             <span className="text-white font-display font-bold text-sm">
-              DriverMax
+              MoneyDrive
             </span>
           </div>
           <div className="flex items-center gap-2">
